@@ -1,0 +1,57 @@
+#define RMotor OUT_C 
+#define LMotor OUT_A 
+#define RBumper SENSOR_3 
+#define LBumper SENSOR_1
+#define LightSensor SENSOR_2
+
+
+task main() { 
+  SetSensor(SENSOR_1,SENSOR_TOUCH); 
+  SetSensor(SENSOR_3,SENSOR_TOUCH); 
+  SetSensor(SENSOR_2,SENSOR_LIGHT);  
+  start move; 
+  start right_touch; 
+  start left_touch; 
+  start find_edge; 
+}
+
+
+task right_touch() {  
+  while(true) { 
+     if(RBumper != 1) { 
+      stop move; 
+      OnRev(RMotor+LMotor); 
+      Wait(20); 
+      OnFwd(LMotor); 
+      Wait(20); 
+      start move;   
+     } 
+  } 
+} 
+ 
+task left_touch() {  
+  while(true) { 
+     if(LBumper != 1) 
+      stop move; 
+      OnRev(RMotor+LMotor); 
+      Wait(20); 
+      OnFwd(RMotor); 
+      Wait(20); 
+      start move;   
+     } 
+  } 
+} 
+ 
+task find_edge() {  
+  while(true) { 
+    if( LightSensor == 1) { 
+      stop move; 
+      OnRev(RMotor+LMotor); 
+      Wait(20); 
+      OnFwd(RMotor); 
+      Wait(200); 
+      start move;   
+ 
+    } 
+  } 
+}
